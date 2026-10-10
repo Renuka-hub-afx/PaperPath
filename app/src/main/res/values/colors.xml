@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Blue & White Theme Palette -->
+    <color name="dark_blue_primary">#0D2240</color>
+    <color name="dark_blue_variant">#163561</color>
+    <color name="dark_blue_deep">#08172E</color>
+    <color name="dark_blue_light">#1E4378</color>
+    <color name="accent_blue">#2563EB</color>
+    <color name="accent_blue_light">#BFDBFE</color>
+    
+    <!-- Neutral & Backgrounds -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_page">#F8FAFD</color>
+    <color name="bg_card">#FFFFFFFF</color>
+    <color name="input_bg">#F1F5F9</color>
+    <color name="stroke_light">#E2E8F0</color>
+    
+    <!-- Chip Specific Colors -->
+    <color name="chip_bg_unselected">#FFFFFF</color>
+    <color name="chip_bg_selected">#0D2240</color>
+    <color name="chip_text_unselected">#0D2240</color>
+    <color name="chip_text_selected">#FFFFFF</color>
+    <color name="chip_stroke">#0D2240</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#0D2240</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_muted">#94A3B8</color>
+    
+    <!-- Status & Functional -->
+    <color name="error_red">#DC2626</color>
+    <color name="success_green">#16A34A</color>
+    <color name="gold_rank">#F59E0B</color>
+    <color name="black">#FF000000</color>
+</resources>

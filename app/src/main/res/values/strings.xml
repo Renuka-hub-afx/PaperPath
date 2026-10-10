@@ -1,0 +1,74 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="Typos,SpellCheckingInspection,GrammarInspection">
+    <string name="app_name">SmartCFP</string>
+    <string name="app_tagline">Autonomous Conference &amp; CFP Tracker</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_documents">Conferences</string>
+    <string name="cd_logo">SmartCFP Logo</string>
+
+    <!-- Sign In Strings -->
+    <string name="sign_in_title">Welcome Back</string>
+    <string name="sign_in_subtitle">Track deadlines and never miss a submission cutoff</string>
+    <string name="email_hint">Email Address</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="no_account_prompt">Do not have an account? </string>
+    <string name="action_sign_up">Sign Up</string>
+
+    <!-- Sign Up Strings -->
+    <string name="sign_up_title">Create Account</string>
+    <string name="sign_up_subtitle">Join researchers worldwide tracking top CFPs</string>
+    <string name="name_hint">Full Name (e.g., Dr. John Doe)</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="terms_agreement">I agree to the Terms &amp; Privacy Policy</string>
+    <string name="btn_sign_up">Create Account</string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="action_sign_in">Sign In</string>
+
+    <!-- Validation Strings -->
+    <string name="err_empty_name">Please enter your full name</string>
+    <string name="err_empty_email">Please enter your email address</string>
+    <string name="err_invalid_email">Please enter a valid email address</string>
+    <string name="err_empty_password">Please enter your password</string>
+    <string name="err_short_password">Password must be at least 6 characters</string>
+    <string name="err_password_mismatch">Passwords do not match</string>
+    <string name="err_accept_terms">Please accept the Terms &amp; Privacy Policy</string>
+    <string name="err_select_at_least_one_domain">Please select at least one research domain</string>
+    <string name="success_sign_in">Signed in successfully!</string>
+    <string name="success_sign_up">Account created successfully!</string>
+
+    <!-- Topic / Domain Selection Strings -->
+    <string name="topic_selection_title">Select Research Tracks</string>
+    <string name="topic_selection_subtitle">Personalize your feed with domains you want to track</string>
+    <string name="topic_selection_hint">Select one or more research fields:</string>
+    <string name="btn_continue_to_feed">Continue to Smart Feed</string>
+    <string name="btn_save_preferences">Save Preferences</string>
+    <string name="my_research_tracks">My Research Tracks</string>
+    <string name="edit_tracks">Edit</string>
+
+    <!-- Predefined Research Domains -->
+    <string name="domain_ai">Artificial Intelligence (AI)</string>
+    <string name="domain_cv">Computer Vision (CV)</string>
+    <string name="domain_nlp">Natural Language Processing (NLP)</string>
+    <string name="domain_ml">Machine Learning &amp; Deep Learning</string>
+    <string name="domain_systems">Distributed &amp; Operating Systems</string>
+    <string name="domain_cloud">Cloud &amp; Edge Computing</string>
+    <string name="domain_security">Cybersecurity &amp; Cryptography</string>
+    <string name="domain_iot">Internet of Things (IoT)</string>
+    <string name="domain_hci">Human-Computer Interaction (HCI)</string>
+    <string name="domain_se">Software Engineering</string>
+    <string name="domain_robotics">Robotics &amp; Autonomous Systems</string>
+    <string name="domain_data">Data Science &amp; Big Data</string>
+    <string name="domain_networks">Networking &amp; Wireless Systems</string>
+    <string name="domain_quantum">Quantum Computing</string>
+
+    <!-- Home/Main Strings -->
+    <string name="welcome_to_smartcfp">Welcome to SmartCFP</string>
+    <string name="authenticated_status">Your research profile is active</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="upcoming_deadlines">Upcoming Deadlines</string>
+    <string name="view_feed_description">Discover upcoming conference cutoffs matching your tracks</string>
+    <string name="btn_sign_out">Sign Out</string>
+</resources>
