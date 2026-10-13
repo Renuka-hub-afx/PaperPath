@@ -1,68 +1,82 @@
 package com.example.paperpath;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Set;
-
-@SuppressWarnings("SpellCheckingInspection")
 public class SignInActivity extends AppCompatActivity {
 
-    private TextInputLayout tilEmail;
-    private TextInputLayout tilPassword;
-    private TextInputEditText etEmail;
-    private TextInputEditText etPassword;
+    private EditText etEmail;
+    private EditText etPassword;
+    private ImageView ivPasswordToggle;
     private MaterialButton btnSignIn;
-    private TextView tvSignUpLink;
     private TextView tvForgotPassword;
+    private View btnGoogleSignIn;
+    private TextView tvSignUpLink;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_in);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.scrollViewSignIn), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         initViews();
         setupListeners();
     }
 
     private void initViews() {
-        tilEmail = findViewById(R.id.tilEmail);
-        tilPassword = findViewById(R.id.tilPassword);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+        ivPasswordToggle = findViewById(R.id.ivPasswordToggle);
         btnSignIn = findViewById(R.id.btnSignIn);
-        tvSignUpLink = findViewById(R.id.tvSignUpLink);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
+        tvSignUpLink = findViewById(R.id.tvSignUpLink);
     }
 
     private void setupListeners() {
-        // Sign In Button Click
+        // Password Visibility Toggle
+        if (ivPasswordToggle != null) {
+            ivPasswordToggle.setOnClickListener(v -> {
+                isPasswordVisible = !isPasswordVisible;
+                if (isPasswordVisible) {
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    ivPasswordToggle.setImageResource(R.drawable.ic_eye_off);
+                } else {
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    ivPasswordToggle.setImageResource(R.drawable.ic_eye);
+                }
+                etPassword.setSelection(etPassword.getText().length());
+            });
+        }
+
+        // Login CTA
         btnSignIn.setOnClickListener(v -> handleSignIn());
 
-        // Navigate to Sign Up Screen
+        // Google SSO
+        if (btnGoogleSignIn != null) {
+            btnGoogleSignIn.setOnClickListener(v -> {
+                Toast.makeText(this, "Signing in with Google...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                intent.putExtra("USER_EMAIL", "saniya.g23@gmail.com");
+                intent.putExtra("USER_NAME", "Saniya Gaonkar");
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        // Navigate to Sign Up
         tvSignUpLink.setOnClickListener(v -> {
             Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
             startActivity(intent);
@@ -70,56 +84,35 @@ public class SignInActivity extends AppCompatActivity {
 
         // Forgot Password
         tvForgotPassword.setOnClickListener(v -> {
-            String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
+            String email = etEmail.getText().toString().trim();
             if (TextUtils.isEmpty(email)) {
-                Toast.makeText(SignInActivity.this, "Please enter your email above to reset password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter your email above to reset password", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(SignInActivity.this, "Password reset instructions sent to " + email, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Password reset instructions sent to " + email, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void handleSignIn() {
-        // Clear errors
-        tilEmail.setError(null);
-        tilPassword.setError(null);
-
-        String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
-        String password = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
-
-        boolean isValid = true;
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
-            tilEmail.setError(getString(R.string.err_empty_email));
-            isValid = false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            tilEmail.setError(getString(R.string.err_invalid_email));
-            isValid = false;
+            etEmail.setError(getString(R.string.err_empty_email));
+            etEmail.requestFocus();
+            return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            tilPassword.setError(getString(R.string.err_empty_password));
-            isValid = false;
-        } else if (password.length() < 6) {
-            tilPassword.setError(getString(R.string.err_short_password));
-            isValid = false;
+            etPassword.setError(getString(R.string.err_empty_password));
+            etPassword.requestFocus();
+            return;
         }
 
-        if (isValid) {
-            Toast.makeText(this, getString(R.string.success_sign_in), Toast.LENGTH_SHORT).show();
-
-            SharedPreferences prefs = getSharedPreferences(TopicSelectionActivity.PREFS_NAME, Context.MODE_PRIVATE);
-            Set<String> savedTracks = prefs.getStringSet(TopicSelectionActivity.KEY_USER_TRACKS, null);
-
-            Intent intent;
-            if (savedTracks == null || savedTracks.isEmpty()) {
-                intent = new Intent(SignInActivity.this, TopicSelectionActivity.class);
-            } else {
-                intent = new Intent(SignInActivity.this, MainActivity.class);
-            }
-            intent.putExtra("USER_EMAIL", email);
-            startActivity(intent);
-            finish();
-        }
+        Toast.makeText(this, getString(R.string.success_sign_in), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        intent.putExtra("USER_EMAIL", email);
+        startActivity(intent);
+        finish();
     }
 }

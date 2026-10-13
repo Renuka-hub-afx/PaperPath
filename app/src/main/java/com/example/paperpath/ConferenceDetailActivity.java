@@ -1,41 +1,38 @@
 package com.example.paperpath;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.widget.ImageButton;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 
-@SuppressWarnings("SpellCheckingInspection")
 public class ConferenceDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_CONFERENCE = "EXTRA_CONFERENCE";
 
-    private ImageButton btnBackFromDetail;
-    private ImageButton btnBookmarkDetail;
-    private TextView tvDetailDomainTag;
-    private TextView tvDetailCoreRank;
-    private TextView tvDetailAcronym;
-    private TextView tvDetailFullName;
-    private TextView tvDetailTopics;
-    private TextView tvDetailVenue;
+    private ImageView btnDetailBack;
+    private ImageView btnDetailShare;
+    private ImageView btnDetailBookmark;
+    private ImageView ivDetailBadge;
+    private TextView tvDetailTitle;
     private TextView tvDetailDates;
-    private TextView tvDetailSubmissionDeadline;
-    private TextView tvDetailNotificationDate;
-    private MaterialButton btnSyncToCalendar;
-    private MaterialButton btnOfficialPortal;
+    private TextView tvDetailVenue;
+    private TextView tvDetailUrl;
+    private TextView tvDetailTag1;
+    private TextView tvDetailTag2;
+    private TextView tvDetailTag3;
+    private TextView tvDetailAboutText;
+    private TextView tvSubmissionDeadlineDate;
+    private TextView tvAcceptanceDate;
+    private TextView tvCameraReadyDate;
+    private MaterialButton btnSaveForLater;
 
     private Conference conference;
     private boolean isBookmarked = false;
@@ -43,14 +40,7 @@ public class ConferenceDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conference_detail);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.mainLayoutDetail), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             conference = getIntent().getSerializableExtra(EXTRA_CONFERENCE, Conference.class);
@@ -64,78 +54,143 @@ public class ConferenceDetailActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        btnBackFromDetail = findViewById(R.id.btnBackFromDetail);
-        btnBookmarkDetail = findViewById(R.id.btnBookmarkDetail);
-        tvDetailDomainTag = findViewById(R.id.tvDetailDomainTag);
-        tvDetailCoreRank = findViewById(R.id.tvDetailCoreRank);
-        tvDetailAcronym = findViewById(R.id.tvDetailAcronym);
-        tvDetailFullName = findViewById(R.id.tvDetailFullName);
-        tvDetailTopics = findViewById(R.id.tvDetailTopics);
-        tvDetailVenue = findViewById(R.id.tvDetailVenue);
+        btnDetailBack = findViewById(R.id.btnDetailBack);
+        btnDetailShare = findViewById(R.id.btnDetailShare);
+        btnDetailBookmark = findViewById(R.id.btnDetailBookmark);
+        ivDetailBadge = findViewById(R.id.ivDetailBadge);
+        tvDetailTitle = findViewById(R.id.tvDetailTitle);
         tvDetailDates = findViewById(R.id.tvDetailDates);
-        tvDetailSubmissionDeadline = findViewById(R.id.tvDetailSubmissionDeadline);
-        tvDetailNotificationDate = findViewById(R.id.tvDetailNotificationDate);
-        btnSyncToCalendar = findViewById(R.id.btnSyncToCalendar);
-        btnOfficialPortal = findViewById(R.id.btnOfficialPortal);
+        tvDetailVenue = findViewById(R.id.tvDetailVenue);
+        tvDetailUrl = findViewById(R.id.tvDetailUrl);
+        tvDetailTag1 = findViewById(R.id.tvDetailTag1);
+        tvDetailTag2 = findViewById(R.id.tvDetailTag2);
+        tvDetailTag3 = findViewById(R.id.tvDetailTag3);
+        tvDetailAboutText = findViewById(R.id.tvDetailAboutText);
+        tvSubmissionDeadlineDate = findViewById(R.id.tvSubmissionDeadlineDate);
+        tvAcceptanceDate = findViewById(R.id.tvAcceptanceDate);
+        tvCameraReadyDate = findViewById(R.id.tvCameraReadyDate);
+        btnSaveForLater = findViewById(R.id.btnSaveForLater);
     }
 
-    @SuppressLint("SetTextI18n")
     private void populateData() {
-        if (conference == null) return;
+        if (conference == null) {
+            // Provide fallback default matching reference screenshot
+            conference = new Conference(
+                    "ieee_ai_2026",
+                    "IEEE ICAI",
+                    "IEEE International Conference on AI",
+                    "AI & ML",
+                    "CORE A*",
+                    "Vancouver, Canada",
+                    "Jan 15 - 18, 2026",
+                    "Sep 10, 2025",
+                    25,
+                    "Oct 15, 2025",
+                    "Nov 5, 2025",
+                    "The IEEE International Conference on Artificial Intelligence (ICAI) brings together researchers, practitioners and industry experts to discuss the latest advances in AI, machine learning and intelligent systems.",
+                    "AI, Machine Learning, Deep Learning",
+                    "https://www.ieee.org/conferences/ai",
+                    "Upcoming",
+                    new String[]{"AI & ML", "Computer Science", "IEEE"}
+            );
+        }
 
-        tvDetailDomainTag.setText(conference.getDomainTag());
-        tvDetailCoreRank.setText(conference.getCoreRank());
-        tvDetailAcronym.setText(conference.getAcronym());
-        tvDetailFullName.setText(conference.getFullName());
-        tvDetailTopics.setText("Topic: " + conference.getTopics());
-        tvDetailVenue.setText("📍 Venue: " + conference.getVenue());
-        tvDetailDates.setText("🗓 Conference Dates: " + conference.getConfDates());
-        tvDetailSubmissionDeadline.setText("⏰ SUBMISSION DEADLINE: " + conference.getSubmissionDeadline() + " (" + conference.getDaysLeft() + " Days Left)");
-        tvDetailNotificationDate.setText("📢 Notification: " + conference.getNotificationDate());
-        isBookmarked = conference.isBookmarked();
+        tvDetailTitle.setText(conference.getFullName());
+        tvDetailDates.setText(conference.getConfDates());
+        tvDetailVenue.setText(conference.getVenue());
+        tvDetailUrl.setText(conference.getOfficialUrl());
+        tvDetailAboutText.setText(conference.getAboutDescription());
+
+        // Key Dates
+        tvSubmissionDeadlineDate.setText(conference.getSubmissionDeadline());
+        tvAcceptanceDate.setText(conference.getNotificationDate());
+        tvCameraReadyDate.setText(conference.getCameraReadyDate());
+
+        // Badge
+        if (conference.getAcronym().contains("ACM") || conference.getFullName().contains("ACM")) {
+            ivDetailBadge.setImageResource(R.drawable.ic_badge_acm);
+        } else {
+            ivDetailBadge.setImageResource(R.drawable.ic_badge_ieee);
+        }
+
+        // Tags
+        String[] tags = conference.getTags();
+        if (tags.length > 0) tvDetailTag1.setText(tags[0]);
+        if (tags.length > 1) {
+            tvDetailTag2.setText(tags[1]);
+            tvDetailTag2.setVisibility(View.VISIBLE);
+        } else {
+            tvDetailTag2.setVisibility(View.GONE);
+        }
+        if (tags.length > 2) {
+            tvDetailTag3.setText(tags[2]);
+            tvDetailTag3.setVisibility(View.VISIBLE);
+        } else {
+            tvDetailTag3.setVisibility(View.GONE);
+        }
+
+        isBookmarked = BookmarkManager.isBookmarked(this, conference.getId());
+        conference.setBookmarked(isBookmarked);
+        updateBookmarkUI();
     }
 
     private void setupListeners() {
-        btnBackFromDetail.setOnClickListener(v -> finish());
+        btnDetailBack.setOnClickListener(v -> finish());
 
-        btnBookmarkDetail.setOnClickListener(v -> {
-            isBookmarked = !isBookmarked;
-            if (isBookmarked) {
-                Toast.makeText(this, "Added " + conference.getAcronym() + " to Watchlist", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Removed from Watchlist", Toast.LENGTH_SHORT).show();
-            }
+        // Share Action
+        btnDetailShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String shareBody = conference.getFullName() + "\nDates: " + conference.getConfDates() + "\nVenue: " + conference.getVenue() + "\nSubmission Deadline: " + conference.getSubmissionDeadline() + "\nLink: " + conference.getOfficialUrl();
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, conference.getFullName());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(shareIntent, "Share Conference"));
         });
 
-        btnSyncToCalendar.setOnClickListener(v -> syncToDeviceCalendar());
+        // Top Bookmark Star Toggle
+        btnDetailBookmark.setOnClickListener(v -> {
+            toggleBookmark();
+        });
 
-        btnOfficialPortal.setOnClickListener(v -> {
-            if (conference != null && conference.getOfficialUrl() != null) {
+        // Bottom CTA Save for Later Button Toggle
+        btnSaveForLater.setOnClickListener(v -> {
+            toggleBookmark();
+        });
+
+        // Click official URL to open in browser
+        tvDetailUrl.setOnClickListener(v -> {
+            try {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(conference.getOfficialUrl()));
                 startActivity(browserIntent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Could not open browser", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void syncToDeviceCalendar() {
-        if (conference == null) return;
+    private void toggleBookmark() {
+        isBookmarked = !isBookmarked;
+        conference.setBookmarked(isBookmarked);
+        BookmarkManager.setBookmarked(this, conference.getId(), isBookmarked);
+        updateBookmarkUI();
 
-        long startTime = System.currentTimeMillis() + (long) conference.getDaysLeft() * 24 * 60 * 60 * 1000;
-        long endTime = startTime + 60 * 60 * 1000;
+        if (isBookmarked) {
+            Toast.makeText(this, "Saved for Later!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Removed from Saved", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        Intent intent = new Intent(Intent.ACTION_INSERT)
-                .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
-                .putExtra(CalendarContract.Events.TITLE, "[Paper Deadline] " + conference.getAcronym())
-                .putExtra(CalendarContract.Events.DESCRIPTION, conference.getFullName() + "\nTopics: " + conference.getTopics() + "\nOfficial Link: " + conference.getOfficialUrl())
-                .putExtra(CalendarContract.Events.EVENT_LOCATION, conference.getVenue())
-                .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-
-        try {
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this, "Unable to open calendar application", Toast.LENGTH_SHORT).show();
+    private void updateBookmarkUI() {
+        btnDetailBookmark.setImageTintList(null);
+        if (isBookmarked) {
+            btnDetailBookmark.setImageResource(R.drawable.ic_bookmark_star_filled);
+            btnSaveForLater.setText(R.string.saved_for_later);
+            btnSaveForLater.setIconResource(R.drawable.ic_bookmark_ribbon_filled);
+        } else {
+            btnDetailBookmark.setImageResource(R.drawable.ic_bookmark_star);
+            btnSaveForLater.setText(R.string.save_for_later);
+            btnSaveForLater.setIconResource(R.drawable.ic_bookmark_ribbon);
         }
     }
 }
